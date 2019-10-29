@@ -24,8 +24,17 @@
             </select>
             <select class="form-control" v-model="brand" style="margin-right: 10px">
                 <option value="Diadora">Diadora</option>
-                <option value="Brand B">Brand B</option>
-                <option value="Brand C">Brand C</option>
+                <option value="Nike">Nike</option>
+                <option value="Aldo">Aldo</option>
+                <option value="Skechers">Skechers</option>
+                <option value="Columbia">Columbia</option>
+                <option value="Justin">Justin</option>
+                <option value="Crocs">Crocs</option>
+                <option value="Puma">Puma</option>
+                <option value="Clarks">Clarks</option>
+                <option value="Adidas">Adidas</option>
+                <option value="Delli">Delli</option>
+                <option value="Polo">Polo</option>
             </select>
           </div>
           <div class="input-group">
@@ -46,7 +55,6 @@ export default {
     },
     methods: {
       submit() {
-          console.log(this)
           if (this.gender === null || this.brand === null || this.category === null ) {
               alert('All parameter need to be selected')
           } else {
