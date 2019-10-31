@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { isObject } from 'util'
 
 Vue.use(Vuex)
 
@@ -9,6 +10,7 @@ export default new Vuex.Store({
     loaded: false,
     products: null,
     triggerFlag: false,
+    flag: false,
     filteredProducts: {
       data: []
     },
@@ -32,19 +34,32 @@ export default new Vuex.Store({
   mutations: {
     fetchProducts(state, products) {
       state.products = products
+      state.flag = true
+    },
+    loaded(state) {
+      state.loaded = true
     },
     filter(state, params) {
+
       state.triggerFlag = !state.triggerFlag
       state.params = params
       state.filteredProducts.data = []
       state.chartdata.labels = []
       state.chartdata.datasets[0].data = []
 
-      for (var key in state.products) {
-        if (key.toLowerCase().search(params.brand.toLowerCase()) !== -1) {
-          state.products[key].data.forEach( (datum) => {
-            state.filteredProducts.data.push(datum)
-          })
+      if (typeof params === "object") {
+        for (var key in state.products) {
+          if (key.toLowerCase().search(params.brand.toLowerCase()) !== -1) {
+            state.products[key].data.forEach( (datum) => {
+              state.filteredProducts.data.push(datum)
+            })
+          }
+        }
+      } else {
+        for (var key in state.products) {
+          if (key === params) {
+            state.filteredProducts.data = state.products[key].data
+          }
         }
       }
       
@@ -66,8 +81,8 @@ export default new Vuex.Store({
         }
       }
 
-      console.log(state.chartdata.labels, "labels")
-      console.log(state.chartdata.datasets[0].data, "data")
+      // console.log(state.chartdata.labels, "labels")
+      // console.log(state.chartdata.datasets[0].data, "data")
     }
   },
   actions: {

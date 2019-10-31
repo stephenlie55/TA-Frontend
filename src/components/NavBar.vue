@@ -16,25 +16,13 @@
       <form id="formSearch" class="form-inline">
           <div class="form-group">
             <select class="form-control" v-model="gender" style="margin-right: 5px; margin-left: 5px">
-                <option value="Men">Men</option>
-                <option value="Women">Women</option>
+                <option selected value="Men">Men</option>
             </select>
             <select class="form-control" v-model="category" style="margin-right: 5px">
-                <option value="Shoes">Shoes</option>
+                <option selected value="Shoes">Shoes</option>
             </select>
             <select class="form-control" v-model="brand" style="margin-right: 10px">
-                <option value="Diadora">Diadora</option>
-                <option value="Nike">Nike</option>
-                <option value="Aldo">Aldo</option>
-                <option value="Skechers">Skechers</option>
-                <option value="Columbia">Columbia</option>
-                <option value="Justin">Justin</option>
-                <option value="Crocs">Crocs</option>
-                <option value="Puma">Puma</option>
-                <option value="Clarks">Clarks</option>
-                <option value="Adidas">Adidas</option>
-                <option value="Delli">Delli</option>
-                <option value="Polo">Polo</option>
+                <option v-for="(shortName, index) in listOfBrand" :key="index" :value=shortName>{{shortName}}</option>
             </select>
           </div>
           <div class="input-group">
@@ -51,6 +39,7 @@ export default {
             gender: null,
             brand: null,
             category: null,
+            listOfBrand: []
         }
     },
     methods: {
@@ -66,6 +55,24 @@ export default {
               this.$store.state.loaded = true
           }
       }
+    },
+    created() {
+        let obj = {}
+        for (var key in this.$store.state.products) {
+            obj[this.$store.state.products[key].data[0].productShortName.toUpperCase()] = this.$store.state.products[key].data[0].productShortName
+        }
+
+        for (var key in obj) {
+            let endIndex
+            inner_loop:
+            for (var i=0; i<key.length; i++) {
+                if (key[i] === " ") {
+                    endIndex = i
+                    break inner_loop
+                }
+            }
+            this.listOfBrand.push(key.substr(0, endIndex))
+        }
     }
 }
 </script>

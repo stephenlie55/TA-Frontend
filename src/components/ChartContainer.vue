@@ -1,11 +1,14 @@
 <template>
-  <div class="container" style="margin: 20px; background: white;">
+  <div class="container" style="margin: 20px; background: white; border-radius: 5px">
     <div style="display: flex; flex-direction: column; padding-top: 1%">
         <small>
-            Jenis barang: <strong>{{$store.state.params.brand}}</strong>
+            Jenis barang: <strong>Sepatu</strong>
         </small>
-        <small>
-            Detail kategori barang: <strong>{{$store.state.params.category}}</strong>
+        <small v-if="typeof $store.state.params === 'object'">
+            Detail barang: <strong>{{$store.state.params.brand}}</strong>
+        </small>
+        <small v-else>
+            Detail barang: <strong>{{$store.state.params}}</strong>
         </small>
         <small>
             Total penjualan: <strong>{{$store.state.filteredProducts.data.length}}</strong>
@@ -31,13 +34,24 @@
             chartdata: null
         }),
         created() {
-            this.chartdata = {
-                labels: this.$store.state.chartdata.labels,
-                datasets: [{
-                    label: this.$store.state.params.brand,
-                    backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                    data: this.$store.state.chartdata.datasets[0].data
-                }]
+            if (typeof this.$store.state.params === 'object') {
+                this.chartdata = {
+                    labels: this.$store.state.chartdata.labels,
+                    datasets: [{
+                        label: this.$store.state.params.brand,
+                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                        data: this.$store.state.chartdata.datasets[0].data
+                    }]
+                }
+            } else {
+                this.chartdata = {
+                    labels: this.$store.state.chartdata.labels,
+                    datasets: [{
+                        label: this.$store.state.params,
+                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                        data: this.$store.state.chartdata.datasets[0].data
+                    }]
+                }
             }
         },
     }
