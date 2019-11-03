@@ -24,6 +24,7 @@ export default new Vuex.Store({
         },
       ]
     },
+    search: "",
     options: {
       responsive: true,
       maintainAspectRatio: false
@@ -32,6 +33,10 @@ export default new Vuex.Store({
 
   },
   mutations: {
+    search(state, searchValue) {
+      console.log("masuk commit")
+      state.search = searchValue
+    },
     fetchProducts(state, products) {
       state.products = products
       state.flag = true

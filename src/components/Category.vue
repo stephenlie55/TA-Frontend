@@ -20,5 +20,15 @@
                 this.categories.push(key)
             }
         },
+        watch: {
+            '$store.state.search'() {
+                this.categories = []
+                for (var key in this.$store.state.products) {
+                    if (key.toLowerCase().search(this.$store.state.search.toLowerCase()) !== -1) {
+                        this.categories.push(key)
+                    }
+                }
+            }
+        }
     }
 </script>

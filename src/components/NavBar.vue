@@ -15,15 +15,28 @@
       <!-- Search -->
       <form id="formSearch" class="form-inline">
           <div class="form-group">
+
             <select class="form-control" v-model="gender" style="margin-right: 5px; margin-left: 5px">
                 <option selected value="Men">Men</option>
             </select>
             <select class="form-control" v-model="category" style="margin-right: 5px">
                 <option selected value="Shoes">Shoes</option>
             </select>
-            <select class="form-control" v-model="brand" style="margin-right: 10px">
+
+            <!-- <select class="form-control" v-model="brand" style="margin-right: 10px">
                 <option v-for="(shortName, index) in listOfBrand" :key="index" :value=shortName>{{shortName}}</option>
-            </select>
+            </select> -->
+
+            <input 
+                type="text" 
+                class="form-control" 
+                v-model="brand" 
+                aria-describedby="emailHelp" 
+                placeholder="Search here . . ." 
+                style="width: 150px; margin-right: 15px"
+                @change="search"
+            >
+          
           </div>
           <div class="input-group">
               <button class="btn btn-secondary" @click.prevent="submit">Submit</button>
@@ -54,6 +67,10 @@ export default {
               })
               this.$store.state.loaded = true
           }
+      },
+      search() {
+          console.log('on change ter trigger')
+          this.$store.commit('search', this.brand)
       }
     },
     created() {
