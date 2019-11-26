@@ -11,7 +11,7 @@
         methods: {
             renderChart() {
                 this.$store.commit('loaded')
-                this.$store.commit('filter', this.category)
+                this.$store.commit('filterChart', this.category)
             }
         },
         created() {

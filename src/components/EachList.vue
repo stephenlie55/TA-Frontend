@@ -23,7 +23,7 @@
         methods: {
             renderChart() {
                 this.$store.commit('loaded')
-                this.$store.commit('filter', this.list)
+                this.$store.commit('filterChart', this.list)
             }
         },
         created() {
@@ -40,7 +40,7 @@
             // console.log(this.ariaValueMax, "aria value max")
         },
         watch: {
-            '$store.state.filteredProducts.data.length'() {
+            '$store.state.triggerFlag'() {
                 this.ariaValueMax = String(this.$store.state.filteredProducts.data.length)
                 for (var key in this.$store.state.products) {
                     if (this.list == key) {

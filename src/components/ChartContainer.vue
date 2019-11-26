@@ -11,7 +11,7 @@
             Detail barang: <strong>{{$store.state.params}}</strong>
         </small>
         <small>
-            Total penjualan: <strong>{{$store.state.filteredProducts.data.length}}</strong>
+            Total penjualan: <strong>{{$store.state.searchedValue.length}}</strong>
         </small>
     </div>
     <line-chart

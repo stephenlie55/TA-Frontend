@@ -12,6 +12,7 @@ export default new Vuex.Store({
     triggerFlag: false,
     flag: false,
     searched: false,
+    searchedValue: [],
     filteredProducts: {
       data: []
     },
@@ -59,6 +60,7 @@ export default new Vuex.Store({
           if (key.toLowerCase().search(params.brand.toLowerCase()) !== -1) {
             state.products[key].data.forEach( (datum) => {
               state.filteredProducts.data.push(datum)
+              state.searchedValue.push(datum)
             })
           }
         }
@@ -90,6 +92,38 @@ export default new Vuex.Store({
 
       // console.log(state.chartdata.labels, "labels")
       // console.log(state.chartdata.datasets[0].data, "data")
+    },
+    filterChart(state, params) {
+      state.triggerFlag = !state.triggerFlag
+      state.params = params
+      state.searchedValue = [];
+      state.chartdata.labels = []
+      state.chartdata.datasets[0].data = []
+      state.searched = true
+
+      for (var key in state.products) {
+        if (key === params) {
+          state.searchedValue = state.products[key].data
+        }
+      }
+      
+      let year = {}
+
+      state.searchedValue.forEach( (datum) => {
+        if (year[datum.date.substr(datum.date.length-4, datum.date.length)] === undefined) {
+          year[datum.date.substr(datum.date.length-4, datum.date.length)] = []
+          year[datum.date.substr(datum.date.length-4, datum.date.length)].push(datum)
+        } else {
+          year[datum.date.substr(datum.date.length-4, datum.date.length)].push(datum)
+        }
+      })
+
+      for (var key in year) {
+        if (key !== 'Date') {
+          state.chartdata.labels.push(key)
+          state.chartdata.datasets[0].data.push(year[key].length)
+        }
+      }
     }
   },
   actions: {
