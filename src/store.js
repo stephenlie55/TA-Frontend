@@ -11,6 +11,7 @@ export default new Vuex.Store({
     products: null,
     triggerFlag: false,
     flag: false,
+    searched: false,
     filteredProducts: {
       data: []
     },
@@ -51,6 +52,7 @@ export default new Vuex.Store({
       state.filteredProducts.data = []
       state.chartdata.labels = []
       state.chartdata.datasets[0].data = []
+      state.searched = true
 
       if (typeof params === "object") {
         for (var key in state.products) {
@@ -94,7 +96,7 @@ export default new Vuex.Store({
     fetchProducts({commit, state}) {
       axios({
         method: 'get',
-        url: 'http://localhost:3000/product',
+        url: 'http://3.17.28.74:3000/product',
       })
       .then( ({data}) => {
         commit('fetchProducts', data)

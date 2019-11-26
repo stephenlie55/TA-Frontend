@@ -1,24 +1,19 @@
 <template>
-  <div class="container" v-show="$store.state.searched">
-        <div style="margin-top: 10px">
-            <p>
-                Sorted by: <span style="background: #E4E5E6;"> Most Sales </span>
-            </p>
-        </div>
-        <div>
-            <ul class="list-group">
-                <EachCategory v-for="(category, index) in categories" :key="index" :category="category"/>
-            </ul>
-        </div>
+  <div class="container" v-if="$store.state.searched">
+    <div>
+        <ul class="list-group">
+            <EachList v-for="(category, index) in categories" :key="index" :list="category"/>
+        </ul>
+    </div>
   </div>
 </template>
 
 <script>
-    import EachCategory from '@/components/EachCategory.vue'
+    import EachList from '@/components/EachList.vue'
 
     export default {
-        name: 'Categories',
-        components: { EachCategory },
+        name: 'ListWithProgressBar',
+        components: { EachList },
         data: () => ({
             categories: [],
             searched: false
@@ -61,14 +56,14 @@
 
 <style scoped>
  .container {
-     margin: 20px;
-     margin-left: 30px;
+     margin: 5px 20px;
      background: white;
-     width: 80%;
+     width: 98.5%;
      border-radius: 5px;
-     max-height: 465px;
+     max-height: 500px;
      display: flex;
      overflow-y: scroll;
      flex-direction: column;
+     text-align: left;
  }
 </style>

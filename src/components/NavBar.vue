@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background: white !important;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background: white !important; border-bottom: 1px solid #E4E5E6;">
       <a class="navbar-brand" href="#" onClick="history.go(0)"><strong>Expectation Maximization</strong></a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,13 +15,13 @@
       <!-- Search -->
       <form id="formSearch" class="form-inline">
           <div class="form-group">
-
-            <select class="form-control" v-model="gender" style="margin-right: 5px; margin-left: 5px">
+            
+            <!-- <select class="form-control" v-model="gender" style="margin-right: 5px; margin-left: 5px">
                 <option selected value="Men">Men</option>
             </select>
             <select class="form-control" v-model="category" style="margin-right: 5px">
                 <option selected value="Shoes">Shoes</option>
-            </select>
+            </select> -->
 
             <!-- <select class="form-control" v-model="brand" style="margin-right: 10px">
                 <option v-for="(shortName, index) in listOfBrand" :key="index" :value=shortName>{{shortName}}</option>
@@ -49,9 +49,9 @@
 export default {
     data() {
         return {
-            gender: null,
+            gender: "Men",
             brand: null,
-            category: null,
+            category: "Shoes",
             listOfBrand: []
         }
     },
