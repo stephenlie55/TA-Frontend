@@ -54,23 +54,26 @@ export default new Vuex.Store({
       state.chartdata.labels = []
       state.chartdata.datasets[0].data = []
       state.searched = true
-
+      let temp = []
+      
       if (typeof params === "object") {
         for (var key in state.products) {
           if (key.toLowerCase().search(params.brand.toLowerCase()) !== -1) {
             state.products[key].data.forEach( (datum) => {
-              state.filteredProducts.data.push(datum)
-              state.searchedValue.push(datum)
+              temp.push(datum)
             })
           }
         }
       } else {
         for (var key in state.products) {
           if (key === params) {
-            state.filteredProducts.data = state.products[key].data
+            temp = state.products[key].data
           }
         }
       }
+
+      state.searchedValue = temp;
+      state.filteredProducts.data = temp;
       
       let year = {}
 

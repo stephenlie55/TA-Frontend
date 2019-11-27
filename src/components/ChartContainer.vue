@@ -11,7 +11,7 @@
             Detail barang: <strong>{{$store.state.params}}</strong>
         </small>
         <small>
-            Total penjualan: <strong>{{$store.state.searchedValue.length}}</strong>
+            Total penjualan: <strong>{{total}}</strong>
         </small>
     </div>
     <line-chart
@@ -31,9 +31,11 @@
             loaded: false,
             month: "month",
             year: "year",
-            chartdata: null
+            chartdata: null,
+            total: 0
         }),
         created() {
+            this.total = this.$store.state.searchedValue.length
             if (typeof this.$store.state.params === 'object') {
                 this.chartdata = {
                     labels: this.$store.state.chartdata.labels,
@@ -54,5 +56,10 @@
                 }
             }
         },
+        watch: {
+            '$store.state.triggerFlag'() {
+                this.total = this.$store.state.searchedValue.length
+            }
+        }
     }
 </script>
