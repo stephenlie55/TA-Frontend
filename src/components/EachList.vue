@@ -33,11 +33,7 @@
                     this.ariaValueNow = String(this.$store.state.products[key].data.length)
                     this.styleWidth = `width: ${this.ariaValueNow/this.ariaValueMax * 100}%`
                 }
-                // console.log(key, 'ini key')
             }
-            // console.log(this.list, "ini list")
-            // console.log(this.ariaValueNow, "aria value now")
-            // console.log(this.ariaValueMax, "aria value max")
         },
         watch: {
             '$store.state.triggerFlag'() {
@@ -47,7 +43,6 @@
                         this.ariaValueNow = String(this.$store.state.products[key].data.length)
                         this.styleWidth = `width: ${this.ariaValueNow/this.ariaValueMax * 100}%`
                     }
-                    // console.log(key, 'ini key')
                 }
             }
         }

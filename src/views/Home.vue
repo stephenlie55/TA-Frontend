@@ -15,11 +15,11 @@
         
       </div>
 
-      <div class="row" v-if="$store.state.flag" style="width: 100%">
+      <!-- <div class="row" v-if="$store.state.flag" style="width: 100%">
         <div class="col-12" style="margin: 0px; padding: 0px;">
           <ListWithProgressBar/>
         </div>  
-      </div>
+      </div> -->
     </div>
 
     <!-- Modal -->
