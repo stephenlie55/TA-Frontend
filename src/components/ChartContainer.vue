@@ -39,20 +39,34 @@
             if (typeof this.$store.state.params === 'object') {
                 this.chartdata = {
                     labels: this.$store.state.chartdata.labels,
-                    datasets: [{
-                        label: this.$store.state.params.brand,
-                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                        data: this.$store.state.chartdata.datasets[0].data
-                    }]
+                    datasets: [
+                        {
+                            label: this.$store.state.params.brand,
+                            backgroundColor: 'rgba(128, 0, 0, 0.2)',
+                            data: this.$store.state.chartdata.datasets[0].data
+                        },
+                        {
+                            label: "predicted",
+                            backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                            data: this.$store.state.chartdata.datasets[1].data
+                        }
+                    ]
                 }
             } else {
                 this.chartdata = {
                     labels: this.$store.state.chartdata.labels,
-                    datasets: [{
-                        label: this.$store.state.params,
-                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                        data: this.$store.state.chartdata.datasets[0].data
-                    }]
+                    datasets: [
+                        {
+                            label: this.$store.state.params,
+                            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            data: this.$store.state.chartdata.datasets[0].data
+                        },
+                        {
+                            label: "predicted",
+                            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            data: this.$store.state.chartdata.datasets[1].data
+                        }
+                    ]
                 }
             }
         },

@@ -13,6 +13,7 @@
     "chart.js": "^2.8.0",
     "chartjs": "^0.3.24",
     "core-js": "^2.6.5",
+    "tedious": "^6.6.5",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
     "vue-router": "^3.0.3",

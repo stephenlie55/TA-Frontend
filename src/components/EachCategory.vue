@@ -31,9 +31,9 @@
                     this.styleWidth = `width: ${this.ariaValueNow/this.ariaValueMax * 100}%`
                 }
             }
-            console.log(this.ariaValueMin, "Aria value min")
-            console.log(this.ariaValueNow, "Aria value now")
-            console.log(this.ariaValueMax, "Aria value max")
+            // console.log(this.ariaValueMin, "Aria value min")
+            // console.log(this.ariaValueNow, "Aria value now")
+            // console.log(this.ariaValueMax, "Aria value max")
         },
         watch: {
             '$store.state.triggerFlag'() {
