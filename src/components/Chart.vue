@@ -24,22 +24,36 @@
                     this.renderChart(
                         {
                             labels: this.$store.state.chartdata.labels,
-                            datasets: [{
-                                label: this.$store.state.params.brand,
-                                backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                                data: this.$store.state.chartdata.datasets[0].data
-                            }]
+                            datasets: [
+                                {
+                                    label: this.$store.state.params.brand,
+                                    backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                                    data: this.$store.state.chartdata.datasets[0].data
+                                },
+                                {
+                                    label: "moving average",
+                                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                                    data: this.$store.state.chartdata.datasets[1].data
+                                }
+                            ]
                         }, this.$store.state.options
                     )
                 } else {
                     this.renderChart(
                         {
                             labels: this.$store.state.chartdata.labels,
-                            datasets: [{
-                                label: this.$store.state.params,
-                                backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                                data: this.$store.state.chartdata.datasets[0].data
-                            }]
+                            datasets: [
+                                {
+                                    label: this.$store.state.params,
+                                    backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                                    data: this.$store.state.chartdata.datasets[0].data
+                                },
+                                {
+                                    label: "moving average",
+                                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                                    data: this.$store.state.chartdata.datasets[1].data
+                                }    
+                            ]
                         }, this.$store.state.options
                     )
                 }

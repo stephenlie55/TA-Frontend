@@ -9,10 +9,16 @@ export default new Vuex.Store({
   state: {
     loaded: false,
     products: null,
+    categories: null,
+    searchTrigger: false,
     triggerFlag: false,
+    productType: "",
+    categoryFlag: false,
     flag: false,
     searched: false,
     showby: "",
+    startDate: null,
+    untilDate: null,
     searchedValue: [],
     filteredProducts: {
       data: []
@@ -45,30 +51,45 @@ export default new Vuex.Store({
       console.log("masuk commit")
       state.search = searchValue
     },
+    changeProductType(state, productType) {
+      state.productType = productType
+    },
     fetchProducts(state, products) {
       state.products = products
+      console.log(state.products, "ini produk")
       state.flag = true
     },
+    fetchCategory(state, categories) {
+      state.categories = categories
+      state.categoryFlag = true
+    }, 
     loaded(state) {
       state.loaded = true
     },
     filter(state, params) {
 
       state.triggerFlag = !state.triggerFlag
+      state.productType = params.selectedCategory
       state.params = params
       state.showby = params.showby
       state.filteredProducts.data = []
+      state.startDate = params.startDate
+      state.untilDate = params.untilDate
       state.chartdata.labels = []
       state.chartdata.datasets[0].data = []
+      state.chartdata.datasets[1].data = [0,0,0]
       state.searched = true
       let temp = []
       
       if (typeof params === "object") {
+        console.log(params.startDate, "start tanggal")
+        console.log(params.untilDate, "until tanggal")
+        console.log(params.brand)
         for (var key in state.products) {
           if (key.toLowerCase().search(params.brand.toLowerCase()) !== -1) {
-            if (params.untilDate !== null) {
+            if (params.startDate !== null) {
               state.products[key].data.forEach( (datum) => {
-                if ( (new Date(datum.date) >= new Date(params.startDate)) && new Date(datum.date) <= new Date(params.untilDate) ) {
+                if ( (new Date(datum.tanggal) >= new Date(params.startDate)) && new Date(datum.tanggal) <= new Date(params.untilDate) ) {
                   temp.push(datum)
                 } 
               })
@@ -91,10 +112,11 @@ export default new Vuex.Store({
       state.filteredProducts.data = temp;
       
       let year = {}
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
       state.filteredProducts.data.forEach( (datum) => {
-        if (year[datum.date.substr(datum.date.length-4, datum.date.length)] === undefined) {
-          year[datum.date.substr(datum.date.length-4, datum.date.length)] = {
+        if (year[datum.tanggal.substr(0, 4)] === undefined) {
+          year[datum.tanggal.substr(0, 4)] = {
             "January": [],
             "February": [],
             "March": [],
@@ -108,88 +130,85 @@ export default new Vuex.Store({
             "November": [],  
             "December": []
           }
-
-          let index = datum.date.search(" ");
           
-          switch (datum.date.substr(0, index)) {
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
             case "January":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].January.push(datum)
+                year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
             case "February":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].February.push(datum)
+                year[datum.tanggal.substr(0, 4)].February.push(datum)
               break;
             case "March":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].March.push(datum)
+                year[datum.tanggal.substr(0, 4)].March.push(datum)
               break;
             case "April":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].April.push(datum)
+                year[datum.tanggal.substr(0, 4)].April.push(datum)
               break;
             case "May":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].May.push(datum)
+                year[datum.tanggal.substr(0, 4)].May.push(datum)
               break;
             case "June":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].June.push(datum)
+                year[datum.tanggal.substr(0, 4)].June.push(datum)
               break;
             case "July":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].July.push(datum)
+                year[datum.tanggal.substr(0, 4)].July.push(datum)
               break;
             case "August":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].August.push(datum)
+                year[datum.tanggal.substr(0, 4)].August.push(datum)
               break;
             case "September":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].September.push(datum)
+                year[datum.tanggal.substr(0, 4)].September.push(datum)
               break;
             case "October":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].October.push(datum)
+                year[datum.tanggal.substr(0, 4)].October.push(datum)
               break;
             case "November":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].November.push(datum)
+                year[datum.tanggal.substr(0, 4)].November.push(datum)
               break;
             case "December":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].December.push(datum)
+                year[datum.tanggal.substr(0, 4)].December.push(datum)
               break;
             default:
               break;
           }
         } else {
-          let index = datum.date.search(" ");
           
-          switch (datum.date.substr(0, index)) {
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
             case "January":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].January.push(datum)
+                year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
             case "February":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].February.push(datum)
+                year[datum.tanggal.substr(0, 4)].February.push(datum)
               break;
             case "March":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].March.push(datum)
+                year[datum.tanggal.substr(0, 4)].March.push(datum)
               break;
             case "April":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].April.push(datum)
+                year[datum.tanggal.substr(0, 4)].April.push(datum)
               break;
             case "May":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].May.push(datum)
+                year[datum.tanggal.substr(0, 4)].May.push(datum)
               break;
             case "June":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].June.push(datum)
+                year[datum.tanggal.substr(0, 4)].June.push(datum)
               break;
             case "July":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].July.push(datum)
+                year[datum.tanggal.substr(0, 4)].July.push(datum)
               break;
             case "August":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].August.push(datum)
+                year[datum.tanggal.substr(0, 4)].August.push(datum)
               break;
             case "September":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].September.push(datum)
+                year[datum.tanggal.substr(0, 4)].September.push(datum)
               break;
             case "October":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].October.push(datum)
+                year[datum.tanggal.substr(0, 4)].October.push(datum)
               break;
             case "November":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].November.push(datum)
+                year[datum.tanggal.substr(0, 4)].November.push(datum)
               break;
             case "December":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].December.push(datum)
+                year[datum.tanggal.substr(0, 4)].December.push(datum)
               break;
             default:
               break;
@@ -201,7 +220,7 @@ export default new Vuex.Store({
 
       } else if (params.showby === "month") {
         for (var key in year) {
-          if (key !== 'Date') {
+          if (key !== 'tanggal') {
             let indexData = 0
             for (var month in year[key]) {
               state.chartdata.labels.push(`${month.substr(0,3)}, ${key}`)
@@ -218,7 +237,7 @@ export default new Vuex.Store({
         }
       } else if (params.showby === "year") {
         for (var key in year) {
-          if (key !== 'Date') {
+          if (key !== 'tanggal') {
             state.chartdata.labels.push(key)
             let count = 0;
             for (var month in year[key]) {
@@ -230,7 +249,7 @@ export default new Vuex.Store({
         }
       }
 
-      state.chartdata.labels.push(">> Predicted <<")
+      state.chartdata.labels.push("Moving Average")
       let first = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-3]
       let second = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-2]
       let third = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-1]
@@ -247,19 +266,26 @@ export default new Vuex.Store({
       state.searchedValue = [];
       state.chartdata.labels = []
       state.chartdata.datasets[0].data = []
+      state.chartdata.datasets[1].data = [0,0,0]
       state.searched = true
 
       for (var key in state.products) {
         if (key === params) {
-          state.searchedValue = state.products[key].data
+          // state.searchedValue = state.products[key].data
+          state.products[key].data.forEach( (datum) => {
+            if ( (new Date(datum.tanggal) >= new Date(state.startDate)) && new Date(datum.tanggal) <= new Date(state.untilDate) ) {
+              state.searchedValue.push(datum)
+            } 
+          })
         }
       }
       
       let year = {}
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
       state.searchedValue.forEach( (datum) => {
-        if (year[datum.date.substr(datum.date.length-4, datum.date.length)] === undefined) {
-          year[datum.date.substr(datum.date.length-4, datum.date.length)] = {
+        if (year[datum.tanggal.substr(0, 4)] === undefined) {
+          year[datum.tanggal.substr(0, 4)] = {
             "January": [],
             "February": [],
             "March": [],
@@ -273,88 +299,85 @@ export default new Vuex.Store({
             "November": [],  
             "December": []
           }
-
-          let index = datum.date.search(" ");
           
-          switch (datum.date.substr(0, index)) {
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
             case "January":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].January.push(datum)
+                year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
             case "February":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].February.push(datum)
+                year[datum.tanggal.substr(0, 4)].February.push(datum)
               break;
             case "March":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].March.push(datum)
+                year[datum.tanggal.substr(0, 4)].March.push(datum)
               break;
             case "April":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].April.push(datum)
+                year[datum.tanggal.substr(0, 4)].April.push(datum)
               break;
             case "May":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].May.push(datum)
+                year[datum.tanggal.substr(0, 4)].May.push(datum)
               break;
             case "June":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].June.push(datum)
+                year[datum.tanggal.substr(0, 4)].June.push(datum)
               break;
             case "July":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].July.push(datum)
+                year[datum.tanggal.substr(0, 4)].July.push(datum)
               break;
             case "August":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].August.push(datum)
+                year[datum.tanggal.substr(0, 4)].August.push(datum)
               break;
             case "September":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].September.push(datum)
+                year[datum.tanggal.substr(0, 4)].September.push(datum)
               break;
             case "October":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].October.push(datum)
+                year[datum.tanggal.substr(0, 4)].October.push(datum)
               break;
             case "November":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].November.push(datum)
+                year[datum.tanggal.substr(0, 4)].November.push(datum)
               break;
             case "December":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].December.push(datum)
+                year[datum.tanggal.substr(0, 4)].December.push(datum)
               break;
             default:
               break;
           }
         } else {
-          let index = datum.date.search(" ");
           
-          switch (datum.date.substr(0, index)) {
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
             case "January":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].January.push(datum)
+                year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
             case "February":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].February.push(datum)
+                year[datum.tanggal.substr(0, 4)].February.push(datum)
               break;
             case "March":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].March.push(datum)
+                year[datum.tanggal.substr(0, 4)].March.push(datum)
               break;
             case "April":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].April.push(datum)
+                year[datum.tanggal.substr(0, 4)].April.push(datum)
               break;
             case "May":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].May.push(datum)
+                year[datum.tanggal.substr(0, 4)].May.push(datum)
               break;
             case "June":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].June.push(datum)
+                year[datum.tanggal.substr(0, 4)].June.push(datum)
               break;
             case "July":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].July.push(datum)
+                year[datum.tanggal.substr(0, 4)].July.push(datum)
               break;
             case "August":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].August.push(datum)
+                year[datum.tanggal.substr(0, 4)].August.push(datum)
               break;
             case "September":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].September.push(datum)
+                year[datum.tanggal.substr(0, 4)].September.push(datum)
               break;
             case "October":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].October.push(datum)
+                year[datum.tanggal.substr(0, 4)].October.push(datum)
               break;
             case "November":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].November.push(datum)
+                year[datum.tanggal.substr(0, 4)].November.push(datum)
               break;
             case "December":
-                year[datum.date.substr(datum.date.length-4, datum.date.length)].December.push(datum)
+                year[datum.tanggal.substr(0, 4)].December.push(datum)
               break;
             default:
               break;
@@ -366,7 +389,7 @@ export default new Vuex.Store({
 
       } else if (state.showby === "month") {
         for (var key in year) {
-          if (key !== 'Date') {
+          if (key !== 'tanggal') {
             let indexData = 0
             for (var month in year[key]) {
               state.chartdata.labels.push(`${month.substr(0,3)}, ${key}`)
@@ -383,7 +406,7 @@ export default new Vuex.Store({
       } else if (state.showby === "year") {
         for (var key in year) {
           let indexData = 0
-          if (key !== 'Date') {
+          if (key !== 'tanggal') {
             state.chartdata.labels.push(key)
             let count = 0;
             for (var month in year[key]) {
@@ -398,28 +421,49 @@ export default new Vuex.Store({
         }
       }
 
-      let first = state.chartdata.datasets[1].length-2
-      let second = state.chartdata.datasets[1].length-1
-      let third = state.chartdata.datasets[1].length
-      console.log('hereee')
-      state.chartdata.datasets[1].data.push( (state.chartdata.datasets[1][first] + state.chartdata.datasets[1][second] + state.chartdata.datasets[1][third] ) / 3)
-      console.log(state.chartdata.datasets[1].data)
+      state.chartdata.labels.push("Moving Average")
+      let first = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-3]
+      let second = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-2]
+      let third = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-1]
+      state.chartdata.datasets[1].data.push( ((first + second + third) / 3).toFixed(2) )
 
+    },
+    triggerFlag(state) {
+      state.triggerFlag = !state.triggerFlag
     }
     
   },
   actions: {
-    fetchProducts({commit, state}) {
+    fetchProducts({commit, state}, payload) {
+      console.log(payload, "dari action fetchProducts")
       axios({
-        method: 'get',
-        // url: 'http://3.17.28.74:3000/product',
+        method: 'post',
         url: 'http://localhost:3000/product',
+        data: {
+          category: payload.selectedCategory
+        }
       })
       .then( ({data}) => {
+        console.log(data)
         commit('fetchProducts', data)
+        commit('filter', payload)
+        state.loaded = true
       })
       .catch( (err) => {
-        alert('Failed while fetch data from server')
+        alert('Failed while fetch product data from server')
+        console.log(err)
+      })
+    },
+    fetchCategory({commit, state}) {
+      axios({
+        method: 'get',
+        url: 'http://localhost:3000/categories',
+      })
+      .then( ({data}) => {
+        commit('fetchCategory', data)
+      })
+      .catch( (err) => {
+        alert('Failed while fetch category data from server')
         console.log(err)
       })
     }

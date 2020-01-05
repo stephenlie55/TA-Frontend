@@ -1,6 +1,6 @@
 <template>
   <div style="background: #E4E5E6; height: 100%; width: 100%; margin: 0px; padding: 0px;">
-    <NavBar v-if="$store.state.flag"/>
+    <NavBar v-if="$store.state.categoryFlag"/>
     <div class="container" style="background: #E4E5E6; height: 100%; width: 100%; padding: 0px; margin: 0 auto;justify-content: space-between">
       
       <div class="row" style="justify-content: space-between">
@@ -9,17 +9,11 @@
           <ChartContainer v-if="$store.state.loaded" />
         </div>  
         
-        <div class="col-3" style="margin: 0px; padding: 0px;" v-if="$store.state.flag">
+        <div class="col-3" style="margin: 0px; padding: 0px;" v-if="$store.state.loaded">
           <Category/>
         </div>
         
       </div>
-
-      <!-- <div class="row" v-if="$store.state.flag" style="width: 100%">
-        <div class="col-12" style="margin: 0px; padding: 0px;">
-          <ListWithProgressBar/>
-        </div>  
-      </div> -->
     </div>
 
     <!-- Modal -->
@@ -64,7 +58,7 @@ export default {
   data: () => ({
   }),
   created() {
-    this.$store.dispatch('fetchProducts')
+    this.$store.dispatch('fetchCategory')
   },
   computed: {
     products: function() {

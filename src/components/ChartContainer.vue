@@ -2,7 +2,7 @@
   <div class="container" style="margin: 20px; background: white; border-radius: 5px">
     <div style="display: flex; flex-direction: column; padding-top: 1%">
         <small>
-            Jenis barang: <strong>Sepatu</strong>
+            Jenis barang: <strong>{{$store.state.productType}}</strong>
         </small>
         <small v-if="typeof $store.state.params === 'object'">
             Detail barang: <strong>{{$store.state.params.brand}}</strong>
@@ -46,7 +46,7 @@
                             data: this.$store.state.chartdata.datasets[0].data
                         },
                         {
-                            label: "predicted",
+                            label: "moving average",
                             backgroundColor: 'rgba(0, 0, 255, 0.2)',
                             data: this.$store.state.chartdata.datasets[1].data
                         }
@@ -62,7 +62,7 @@
                             data: this.$store.state.chartdata.datasets[0].data
                         },
                         {
-                            label: "predicted",
+                            label: "moving average",
                             backgroundColor: 'rgba(255, 0, 0, 0.2)',
                             data: this.$store.state.chartdata.datasets[1].data
                         }
