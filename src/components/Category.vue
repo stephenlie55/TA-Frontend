@@ -200,7 +200,7 @@
                 var x = []
                 var y = []
 
-                for (var i=xReal.length-6; i<xReal.length; i++) {
+                for (var i=xReal.length-3; i<xReal.length; i++) {
                     x.push(i)
                     y.push(yReal[i])
                 }            
