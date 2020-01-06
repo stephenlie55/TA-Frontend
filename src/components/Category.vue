@@ -176,10 +176,7 @@
                         }
                     }
 
-                    console.log(x)
-                    console.log(y)
-
-                    let hasilRegresi = this.linearRegression(y, x)
+                    let hasilRegresi = this.linearRegression(y, x, key)
                     obj[key].slope = hasilRegresi.slope
                 }
 
@@ -194,18 +191,15 @@
                         }
                     }
                 } while (swapped);
-                console.log(obj)
             },
-            linearRegression(yReal, xReal){
+            linearRegression(yReal, xReal, key){
                 var x = []
                 var y = []
 
-                for (var i=xReal.length-3; i<xReal.length; i++) {
+                for (var i=yReal.length-6; i<yReal.length; i++) {
                     x.push(i)
                     y.push(yReal[i])
-                }            
-                console.log(x, y, "ini dari linear regression")    
-
+                }               
 
                 var lr = {};
                 var n = y.length;
@@ -227,6 +221,19 @@
                 lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
                 lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
 
+                if (key === "fujitsu a573" || key === "lenovo ideapad s5 n4205u" || key === "hp s cf47tu n4205 kb" || key === "s cf0062tu dts pvcy") {
+                    console.log("key: ", key)
+                    console.log("x: ", xReal)
+                    console.log("y: ", yReal)
+                    console.log("n: ", n)
+                    console.log("sum_x: ", sum_x)
+                    console.log("sum_y: ", sum_y)
+                    console.log("sum_xx: ", sum_xx)
+                    console.log("sum_yy: ", sum_yy)
+                    console.log("sum_xy: ", sum_xy)
+                    console.log("b (slope): ", lr.slope)
+                    console.log("=========")
+                }
                 return lr;
             },
             sortingBySales() {
