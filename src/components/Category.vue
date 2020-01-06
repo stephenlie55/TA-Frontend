@@ -35,16 +35,23 @@
                 // Separate data with same name
                 for (var i=0; i<this.categories.length; i++) {
                     this.$store.state.products[this.categories[i]].data.forEach( (datum) => {
-                        if (datum.nama_produk == this.categories[i]) {
-                            if (obj[datum.nama_produk] == undefined) {
-                                obj[datum.nama_produk] = {}
-                                obj[datum.nama_produk].data = []
-                                obj[datum.nama_produk].slope = 0
-                                obj[datum.nama_produk].data.push(datum)
-                            } else {
-                                obj[datum.nama_produk].data.push(datum)
+                        if ( (new Date(datum.tanggal) >= new Date(this.$store.state.startDate)) && new Date(datum.tanggal) <= new Date(this.$store.state.untilDate) ) {
+                            if (datum.nama_produk == this.categories[i]) {
+                                if (obj[datum.nama_produk] == undefined) {
+                                    obj[datum.nama_produk] = {}
+                                    obj[datum.nama_produk].data = []
+                                    obj[datum.nama_produk].slope = 0
+                                    obj[datum.nama_produk].data.push(datum)
+                                } else {
+                                    obj[datum.nama_produk].data.push(datum)
+                                }
                             }
+                        } else {
+                            obj[datum.nama_produk] = {}
+                            obj[datum.nama_produk].data = []
+                            obj[datum.nama_produk].slope = 0
                         }
+
                     })
                 }
 
@@ -53,7 +60,12 @@
                     let y = []
                     let year = {}
                     
+                    year[this.$store.state.untilDate.substr(0, 4)] = {}
                     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    for (var i=0; i< Number(this.$store.state.untilDate.substring(5, 7)); i++) {
+                            year[this.$store.state.untilDate.substr(0, 4)][monthNames[i]] = []
+                    }
+                    
                     obj[key].data.forEach( (datum) => {
                         if (year[datum.tanggal.substr(0, 4)] === undefined) {
                             year[datum.tanggal.substr(0, 4)] = {
@@ -71,7 +83,7 @@
                                 "December": []
                             }
                             
-                            switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
+                            switch (monthNames[Number(datum.tanggal.substring(5, 7))-1]) {
                                 case "January":
                                     year[datum.tanggal.substr(0, 4)].January.push(datum)
                                     break;
@@ -112,7 +124,7 @@
                                     break;
                             }
                         } else {
-                            switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
+                            switch (monthNames[Number(datum.tanggal.substring(5, 7))-1]) {
                                 case "January":
                                     year[datum.tanggal.substr(0, 4)].January.push(datum)
                                     break;
@@ -164,11 +176,12 @@
                         }
                     }
 
+                    console.log(x)
+                    console.log(y)
+
                     let hasilRegresi = this.linearRegression(y, x)
                     obj[key].slope = hasilRegresi.slope
                 }
-
-                console.log(Object.keys(obj).length, "ini obj length")
 
                 do {
                     swapped = false;
@@ -181,15 +194,17 @@
                         }
                     }
                 } while (swapped);
+                console.log(obj)
             },
             linearRegression(yReal, xReal){
                 var x = []
                 var y = []
 
-                for (var i=xReal.length-3; i<xReal.length; i++) {
+                for (var i=xReal.length-6; i<xReal.length; i++) {
                     x.push(i)
                     y.push(yReal[i])
-                }                
+                }            
+                console.log(x, y, "ini dari linear regression")    
 
 
                 var lr = {};

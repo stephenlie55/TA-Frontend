@@ -7,11 +7,11 @@
         }),
         props: ['chartdata', 'interval'],
         created() {
-            if (this.interval == "month") {
-                console.log(this.interval, "month")
-            } else if (this.interval == "year") {
-                console.log(this.interval, "year")
-            }
+            // if (this.interval == "month") {
+            //     console.log(this.interval, "month")
+            // } else if (this.interval == "year") {
+            //     console.log(this.interval, "year")
+            // }
         },
         mounted () {
             this.renderChart(this.chartdata, this.$store.state.options)
@@ -20,7 +20,7 @@
             '$store.state.triggerFlag'() {
                 this._data._chart.destroy();
                 if (typeof this.$store.state.params === 'object') {
-                    console.log(this.$store.state.params.brand, "dari chart component")
+                    // console.log(this.$store.state.params.brand, "dari chart component")
                     this.renderChart(
                         {
                             labels: this.$store.state.chartdata.labels,

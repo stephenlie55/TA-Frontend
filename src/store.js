@@ -48,7 +48,7 @@ export default new Vuex.Store({
   },
   mutations: {
     search(state, searchValue) {
-      console.log("masuk commit")
+      // console.log("masuk commit")
       state.search = searchValue
     },
     changeProductType(state, productType) {
@@ -56,7 +56,7 @@ export default new Vuex.Store({
     },
     fetchProducts(state, products) {
       state.products = products
-      console.log(state.products, "ini produk")
+      // console.log(state.products, "ini produk")
       state.flag = true
     },
     fetchCategory(state, categories) {
@@ -82,9 +82,6 @@ export default new Vuex.Store({
       let temp = []
       
       if (typeof params === "object") {
-        console.log(params.startDate, "start tanggal")
-        console.log(params.untilDate, "until tanggal")
-        console.log(params.brand)
         for (var key in state.products) {
           if (key.toLowerCase().search(params.brand.toLowerCase()) !== -1) {
             if (params.startDate !== null) {
@@ -112,10 +109,15 @@ export default new Vuex.Store({
       state.filteredProducts.data = temp;
       
       let year = {}
+      year[state.untilDate.substr(0, 4)] = {}
       const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      for (var i=0; i< Number(state.untilDate.substring(5, 7)); i++) {
+            year[state.untilDate.substr(0, 4)][monthNames[i]] = []
+      }
 
       state.filteredProducts.data.forEach( (datum) => {
         if (year[datum.tanggal.substr(0, 4)] === undefined) {
+          
           year[datum.tanggal.substr(0, 4)] = {
             "January": [],
             "February": [],
@@ -131,7 +133,7 @@ export default new Vuex.Store({
             "December": []
           }
           
-          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))-1]) {
             case "January":
                 year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
@@ -171,9 +173,8 @@ export default new Vuex.Store({
             default:
               break;
           }
-        } else {
-          
-          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
+        } else { 
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))-1]) {
             case "January":
                 year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
@@ -227,7 +228,7 @@ export default new Vuex.Store({
               state.chartdata.datasets[0].data.push(year[key][month].length)
               if (indexData >= 3) {
                 let value = (state.chartdata.datasets[0].data[indexData-3] + state.chartdata.datasets[0].data[indexData-2] + state.chartdata.datasets[0].data[indexData-1])
-                console.log(value, "ini value")
+                // console.log(value, "ini value")
                 state.chartdata.datasets[1].data.push(  (value / 3).toFixed(2) )
               }
               indexData++
@@ -254,10 +255,10 @@ export default new Vuex.Store({
       let second = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-2]
       let third = state.chartdata.datasets[0].data[state.chartdata.datasets[0].data.length-1]
       let value = (first + second + third) / 3;
-      console.log(value, "value")
-      console.log(first, "first")
-      console.log(second, "Second")
-      console.log(third, "third")
+      // console.log(value, "value")
+      // console.log(first, "first")
+      // console.log(second, "Second")
+      // console.log(third, "third")
       state.chartdata.datasets[1].data.push( (first + second + third) / 3)
     },
     filterChart(state, params) {
@@ -281,8 +282,11 @@ export default new Vuex.Store({
       }
       
       let year = {}
+      year[state.untilDate.substr(0, 4)] = {}
       const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
+      for (var i=0; i< Number(state.untilDate.substring(5, 7)); i++) {
+            year[state.untilDate.substr(0, 4)][monthNames[i]] = []
+      }
       state.searchedValue.forEach( (datum) => {
         if (year[datum.tanggal.substr(0, 4)] === undefined) {
           year[datum.tanggal.substr(0, 4)] = {
@@ -300,7 +304,7 @@ export default new Vuex.Store({
             "December": []
           }
           
-          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))-1]) {
             case "January":
                 year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
@@ -342,7 +346,7 @@ export default new Vuex.Store({
           }
         } else {
           
-          switch (monthNames[Number(datum.tanggal.substring(5, 7))]) {
+          switch (monthNames[Number(datum.tanggal.substring(5, 7))-1]) {
             case "January":
                 year[datum.tanggal.substr(0, 4)].January.push(datum)
               break;
@@ -396,7 +400,7 @@ export default new Vuex.Store({
               state.chartdata.datasets[0].data.push(year[key][month].length)
               if (indexData >= 3) {
                 let value = (state.chartdata.datasets[0].data[indexData-3] + state.chartdata.datasets[0].data[indexData-2] + state.chartdata.datasets[0].data[indexData-1])
-                console.log(value, "ini value")
+                // console.log(value, "ini value")
                 state.chartdata.datasets[1].data.push(  value / 3 )
               }
               indexData++
@@ -435,7 +439,7 @@ export default new Vuex.Store({
   },
   actions: {
     fetchProducts({commit, state}, payload) {
-      console.log(payload, "dari action fetchProducts")
+      // console.log(payload, "dari action fetchProducts")
       axios({
         method: 'post',
         url: 'http://localhost:3000/product',
@@ -444,7 +448,7 @@ export default new Vuex.Store({
         }
       })
       .then( ({data}) => {
-        console.log(data)
+        // console.log(data)
         commit('fetchProducts', data)
         commit('filter', payload)
         state.loaded = true
